@@ -191,7 +191,7 @@ public class BMPImage {
         public void write(OutputStream out) throws IOException {
             int width = imageHeader.biWidth;
             int height = imageHeader.biHeight;
-            int nullBytePad = 4 - (width * 3) % 4;
+            int nullBytePad = (4 - (width * 3) % 4) % 4;
             if(height < 0) {
                 height = -height;
                 for(int i = 1; i <= height; i++) {
