@@ -93,8 +93,8 @@ public class MainPanel extends JPanel{
         java.net.URL imageURL = MainPanel.class.getResource(imgLocation);
         System.out.println();
         if (imageURL == null) {
-            System.err.println("Resource not found: "
-                    + imgLocation);
+//            System.err.println("Resource not found: "
+//                    + imgLocation);
             return null;
         } else {
             return new ImageIcon(imageURL);

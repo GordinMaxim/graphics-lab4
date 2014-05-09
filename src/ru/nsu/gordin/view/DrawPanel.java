@@ -1,16 +1,12 @@
 package ru.nsu.gordin.view;
 
-import ru.nsu.gordin.MainPanel;
 import ru.nsu.gordin.model.BMPImage;
-import ru.nsu.gordin.model.Palette;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
@@ -252,41 +248,53 @@ public class DrawPanel extends JPanel implements MouseMotionListener {
     }
 
     public void doubleSize() {
-    }
-
-    public void floydSteinberg() {
         if(!imageLoaded)
             return;
 
         BMPImage filteredImage = new BMPImage(imageAreaPanel.getImage());
-        double[][] core = {{0, 0, 0},
-                {0, 0, 7},
-                {5, 3, 1}};
-
         BMPImage.BMPColor[][] bitmap = imageAreaPanel.getImage().getBitMap();
         BMPImage.BMPColor[][] filteredBitmap = filteredImage.getBitMap();
-        for(int i = 1; i <= filteredImage.getHeight(); i++) {
-            for(int j = 1; j <= filteredImage.getWidth(); j++) {
-                filteredBitmap[i][j].red = (int) (core[0][0] * bitmap[i - 1][j - 1].red +
-                        core[0][1] * bitmap[i - 1][j].red +
-                        core[0][2] * bitmap[i - 1][j + 1].red + core[1][0] * bitmap[i][j + 1].red +
-                        core[1][1] * bitmap[i][j].red + core[1][2] * bitmap[i][j + 1].red +
-                        core[2][0] * bitmap[i + 1][j - 1].red + core[2][1] * bitmap[i + 1][j].red +
-                        core[2][2] * bitmap[i + 1][j + 1].red);
+        int height = filteredImage.getHeight();
+        int width = filteredImage.getWidth();
+        for(int i = 1; i <= height; i++) {
+            for(int j = 1; j <= width; j++) {
+                int r;
+                int g;
+                int b;
 
-                filteredBitmap[i][j].green = (int) (core[0][0] * bitmap[i - 1][j - 1].green +
-                        core[0][1] * bitmap[i - 1][j].green +
-                        core[0][2] * bitmap[i - 1][j + 1].green + core[1][0] * bitmap[i][j + 1].green +
-                        core[1][1] * bitmap[i][j].green + core[1][2] * bitmap[i][j + 1].green +
-                        core[2][0] * bitmap[i + 1][j - 1].green + core[2][1] * bitmap[i + 1][j].green +
-                        core[2][2] * bitmap[i + 1][j + 1].green);
-
-                filteredBitmap[i][j].blue = (int) (core[0][0] * bitmap[i - 1][j - 1].blue +
-                        core[0][1] * bitmap[i - 1][j].blue +
-                        core[0][2] * bitmap[i - 1][j + 1].blue + core[1][0] * bitmap[i][j + 1].blue +
-                        core[1][1] * bitmap[i][j].blue + core[1][2] * bitmap[i][j + 1].blue +
-                        core[2][0] * bitmap[i + 1][j - 1].blue + core[2][1] * bitmap[i + 1][j].blue +
-                        core[2][2] * bitmap[i + 1][j + 1].blue);
+                if((i - 1) % 2 == 0 && (j - 1) % 2 == 0) {
+                    int i1 = width / 4 + (i - 1) / 2;
+                    int j1 = height / 4 + (j - 1) / 2;
+                    r = bitmap[i1][j1].red;
+                    g = bitmap[i1][j1].green;
+                    b = bitmap[i1][j1].blue;
+                } else
+                if((i - 1) % 2 == 0) {
+                    int i1 = width / 4 + (i - 1) / 2;
+                    int j1 = height / 4 + (j - 2) / 2;
+                    r = (bitmap[i1][j1].red + bitmap[i1][j1+1].red) / 2;
+                    g = (bitmap[i1][j1].green + bitmap[i1][j1+1].green) / 2;
+                    b = (bitmap[i1][j1].blue + bitmap[i1][j1+1].blue) / 2;
+                } else
+                if((j - 1) % 2 == 0) {
+                    int i1 = width / 4 + (i - 2) / 2;
+                    int j1 = height / 4 + (j - 1) / 2;
+                    r = (bitmap[i1][j1].red + bitmap[i1+1][j1].red) / 2;
+                    g = (bitmap[i1][j1].green + bitmap[i1+1][j1].green) / 2;
+                    b = (bitmap[i1][j1].blue + bitmap[i1+1][j1].blue) / 2;
+                } else {
+                    int i1 = width / 4 + (i - 2) / 2;
+                    int j1 = height / 4 + (j - 2) / 2;
+                    r = (bitmap[i1][j1].red + bitmap[i1][j1+1].red +
+                            bitmap[i1+1][j1].red + bitmap[i1+1][j1+1].red) / 4;
+                    g = (bitmap[i1][j1].green + bitmap[i1][j1+1].green +
+                            bitmap[i1][j1+1].green + bitmap[i1+1][j1+1].green) / 4;
+                    b = (bitmap[i1][j1].blue + bitmap[i1][j1+1].blue +
+                            bitmap[i1][j1+1].blue + bitmap[i1+1][j1+1].blue) / 4;
+                }
+                filteredBitmap[i][j].red = r;
+                filteredBitmap[i][j].green = g;
+                filteredBitmap[i][j].blue = b;
             }
         }
 
@@ -305,7 +313,81 @@ public class DrawPanel extends JPanel implements MouseMotionListener {
         }
     }
 
+    public void floydSteinberg(int n) {
+        if(!imageLoaded)
+            return;
+
+        BMPImage filteredImage = new BMPImage(imageAreaPanel.getImage());
+        int gap = 256/n;
+        BMPImage.BMPColor[][] bitmap = imageAreaPanel.getImage().getBitMap();
+        BMPImage.BMPColor[][] filteredBitmap = filteredImage.getBitMap();
+        for(int i = 1; i <= filteredImage.getHeight(); i++) {
+            for(int j = 1; j <= filteredImage.getWidth(); j++) {
+                int er = filteredBitmap[i][j].red % gap;
+                int eg = filteredBitmap[i][j].green % gap;
+                int eb = filteredBitmap[i][j].blue % gap;
+                filteredBitmap[i][j].red -= er;
+                filteredBitmap[i][j].green -= eg;
+                filteredBitmap[i][j].blue -= eb;
+
+                filteredBitmap[i][j+1].red += (int)(er * 7.0/16);
+                filteredBitmap[i][j+1].green += (int)(eg * 7.0/16);
+                filteredBitmap[i][j+1].blue += (int)(eb * 7.0/16);
+
+                filteredBitmap[i+1][j-1].red += (int)(er * 3.0/16);
+                filteredBitmap[i+1][j-1].green += (int)(eg * 3.0/16);
+                filteredBitmap[i+1][j-1].blue += (int)(eb * 3.0/16);
+
+                filteredBitmap[i+1][j].red += (int)(er * 5.0/16);
+                filteredBitmap[i+1][j].green += (int)(eg * 5.0/16);
+                filteredBitmap[i+1][j].blue += (int)(eb * 5.0/16);
+
+                filteredBitmap[i+1][j+1].red += (int)(er * 1.0/16);
+                filteredBitmap[i+1][j+1].green += (int)(eg * 1.0/16);
+                filteredBitmap[i+1][j+1].blue += (int)(eb * 1.0/16);
+
+                if(filteredBitmap[i][j].red > 255) filteredBitmap[i][j].red = 255;
+                if(filteredBitmap[i][j].green > 255) filteredBitmap[i][j].green = 255;
+                if(filteredBitmap[i][j].blue > 255) filteredBitmap[i][j].blue = 255;
+            }
+        }
+
+        filterPanel.setImage(filteredImage);
+        filterPanel.repaint();
+    }
+
     public void negative() {
+        if(!imageLoaded)
+            return;
+
+        BMPImage filteredImage = new BMPImage(imageAreaPanel.getImage());
+        double[][] core = {{0.5/6, 0.75/6, 0.5/6},
+                {0.75/6, 1.0/6, 0.75/6},
+                {0.5/6, 0.75/6, 0.5/6}};
+
+        BMPImage.BMPColor[][] bitmap = imageAreaPanel.getImage().getBitMap();
+        BMPImage.BMPColor[][] filteredBitmap = filteredImage.getBitMap();
+        for(int i = 1; i <= filteredImage.getHeight(); i++) {
+            for(int j = 1; j <= filteredImage.getWidth(); j++) {
+                filteredBitmap[i][j].red = 255 - filteredBitmap[i][j].red;
+                filteredBitmap[i][j].green = 255 - filteredBitmap[i][j].green;
+                filteredBitmap[i][j].blue = 255 - filteredBitmap[i][j].blue;
+            }
+        }
+
+        filterPanel.setImage(filteredImage);
+        filterPanel.repaint();
+
+        int n = JOptionPane.showOptionDialog(this,
+                "Save changes?", "",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                null,
+                null);
+        if(n != JOptionPane.YES_OPTION) {
+            cancel();
+        }
     }
 
     public void grayShade(int red, int green, int blue) {
@@ -340,53 +422,54 @@ public class DrawPanel extends JPanel implements MouseMotionListener {
         filterPanel.repaint();
     }
 
-    public void orderedDithering() {
+    public void orderedDithering(int n) {
         if(!imageLoaded)
             return;
 
         BMPImage filteredImage = new BMPImage(imageAreaPanel.getImage());
-        double[][] core = {{3.0, 7.0, 4.0},
-                {6.0, 1.0, 9.0},
-                {2.0, 8.0, 5.0}};
+//        double[][] core = {{1, 9, 3, 11},
+//                           {13, 5, 15, 7},
+//                           {4, 12, 2, 10},
+//                           {16, 8, 14, 6}};
 
-        Palette palette = new Palette(3);
-        double gap =1.0;
-        BMPImage.BMPColor[][] bitmap = imageAreaPanel.getImage().getBitMap();
+        double[][] core = {
+                {1, 49, 13, 61, 4, 52, 16, 64},
+                {33, 17, 45, 29, 36, 20, 48, 32},
+                {9, 57, 5, 53, 12, 60, 8, 56},
+                {41, 25, 37, 21, 44, 28, 40, 24},
+                {3, 51, 15, 63, 2, 50, 14, 62},
+                {35, 19, 47, 31, 34, 18, 46, 30},
+                {11, 59, 7, 55, 10, 58, 6, 54},
+                {43, 47, 39, 23, 42, 26, 38, 22},
+        };
+        int mod = core.length;
         BMPImage.BMPColor[][] filteredBitmap = filteredImage.getBitMap();
+        int gap = 256/n;
+        System.out.println(n);
         for(int i = 1; i <= filteredImage.getHeight(); i++) {
             for(int j = 1; j <= filteredImage.getWidth(); j++) {
-                int r = (int) (filteredBitmap[i][j].red + core[i % 3][j % 3] * gap / 10);
-                int g = (int) (filteredBitmap[i][j].green + core[i % 3][j % 3] * gap / 10);
-                int b = (int) (filteredBitmap[i][j].blue + core[i % 3][j % 3] * gap / 10);
+                int er = filteredBitmap[i][j].red % gap;
+                int eg = filteredBitmap[i][j].green % gap;
+                int eb = filteredBitmap[i][j].blue % gap;
+                filteredBitmap[i][j].red -= er;
+                filteredBitmap[i][j].green -= eg;
+                filteredBitmap[i][j].blue -= eb;
 
-                if(r < 0) r = 0;
-                if(g < 0) g = 0;
-                if(b < 0) b = 0;
-                if(r > 255) r = 255;
-                if(g > 255) g = 255;
-                if(b > 255) b = 255;
+                if(er > core[(i-1)%mod][(j-1)%mod])
+                    filteredBitmap[i][j].red += gap;
+                if(eg > core[(i-1)%mod][(j-1)%mod])
+                    filteredBitmap[i][j].green += gap;
+                if(eb > core[(i-1)%mod][(j-1)%mod])
+                    filteredBitmap[i][j].blue += gap;
 
-                filteredBitmap[i][j] = palette.getClosestColor(r, g, b, 256);
-
-//                filteredBitmap[i][j].red = r;
-//                filteredBitmap[i][j].green = g;
-//                filteredBitmap[i][j].blue = b;
+                if(filteredBitmap[i][j].red > 255) filteredBitmap[i][j].red = 255;
+                if(filteredBitmap[i][j].green > 255) filteredBitmap[i][j].green = 255;
+                if(filteredBitmap[i][j].blue > 255) filteredBitmap[i][j].blue = 255;
             }
         }
 
         filterPanel.setImage(filteredImage);
         filterPanel.repaint();
-
-        int n = JOptionPane.showOptionDialog(this,
-                "Save changes?", "",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                null,
-                null);
-        if(n != JOptionPane.YES_OPTION) {
-            cancel();
-        }
     }
 
     public void robertsOperator(double k) {
