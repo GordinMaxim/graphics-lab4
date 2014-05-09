@@ -22,6 +22,7 @@ public class SobelOperatorAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        panel.sobelOperator(1.0);
         final JDialog dialog = new JDialog();
         dialog.setLocationRelativeTo(panel);
         JPanel settingPanel = new JPanel(new GridLayout(2, 1));

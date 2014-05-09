@@ -180,14 +180,6 @@ public class MainPanel extends JPanel{
         JFrame frame = new JFrame("lab #1");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         MainPanel demo = new MainPanel();
-        BMPImage bmpImage = null;
-        try {
-            FileInputStream fis = new FileInputStream("src/res/lenna.bmp");
-            bmpImage = new BMPImage(fis);
-        }
-        catch (Exception e) {
-            System.out.println(e);
-        }
         DrawPanel drawPanel = new DrawPanel();
         demo.initActions(drawPanel);
         frame.setJMenuBar(demo.createMenuBar());

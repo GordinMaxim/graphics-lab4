@@ -22,6 +22,7 @@ public class FloydSteinbergAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        panel.floydSteinberg(16);
         final JDialog dialog = new JDialog();
         dialog.setLocationRelativeTo(panel);
         JPanel settingPanel = new JPanel(new GridLayout(2, 1));

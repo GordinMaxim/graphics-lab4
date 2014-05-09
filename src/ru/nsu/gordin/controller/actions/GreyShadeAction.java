@@ -23,6 +23,7 @@ public class GreyShadeAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        panel.grayShade(10, 10, 10);
         final JDialog dialog = new JDialog();
         dialog.setLocationRelativeTo(panel);
         JPanel settingPanel = new JPanel(new GridLayout(4, 1));

@@ -445,7 +445,6 @@ public class DrawPanel extends JPanel implements MouseMotionListener {
         int mod = core.length;
         BMPImage.BMPColor[][] filteredBitmap = filteredImage.getBitMap();
         int gap = 256/n;
-        System.out.println(n);
         for(int i = 1; i <= filteredImage.getHeight(); i++) {
             for(int j = 1; j <= filteredImage.getWidth(); j++) {
                 int er = filteredBitmap[i][j].red % gap;

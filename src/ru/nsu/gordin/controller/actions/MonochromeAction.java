@@ -22,6 +22,7 @@ public class MonochromeAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        panel.monochrome(100);
         final JDialog dialog = new JDialog();
         dialog.setLocationRelativeTo(panel);
         JPanel settingPanel = new JPanel(new GridLayout(2, 1));
@@ -29,7 +30,7 @@ public class MonochromeAction extends AbstractAction {
 
         JPanel blackPanel = new JPanel();
         blackPanel.setBorder(BorderFactory.createTitledBorder("Blackness"));
-        final JSlider hSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 10);
+        final JSlider hSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 100);
         hSlider.setMajorTickSpacing(100);
         hSlider.setMinorTickSpacing(20);
         hSlider.setPaintTicks(true);
