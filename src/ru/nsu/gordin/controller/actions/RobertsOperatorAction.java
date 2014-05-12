@@ -32,7 +32,7 @@ public class RobertsOperatorAction extends AbstractAction {
         JPanel buttonPanel = new JPanel();
 
         JPanel blackPanel = new JPanel();
-        blackPanel.setBorder(BorderFactory.createTitledBorder("Sobel"));
+        blackPanel.setBorder(BorderFactory.createTitledBorder("Roberts"));
         final JSlider hSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 100);
         hSlider.setMajorTickSpacing(100);
         hSlider.setMinorTickSpacing(20);

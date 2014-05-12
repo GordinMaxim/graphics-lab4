@@ -64,7 +64,7 @@ public class DrawPanel extends JPanel implements MouseMotionListener {
     }
 
     public void copy() {
-        if(!imageLoaded)
+        if(null == filterPanel.getImage())
             return;
         BMPImage copyImage = new BMPImage(filterPanel.getImage());
         imageAreaPanel.setImage(copyImage);
