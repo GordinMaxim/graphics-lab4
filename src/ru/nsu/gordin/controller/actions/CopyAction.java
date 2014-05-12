@@ -17,6 +17,7 @@ public class CopyAction extends AbstractAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-        panel.copy();
+        if(panel.isImageLoaded())
+            panel.copy();
     }
 }

@@ -26,14 +26,14 @@ public class SobelOperatorAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         if(!panel.isImageLoaded())
             return;
-        panel.sobelOperator(1.0);
+        panel.sobelOperator(100);
         final JDialog dialog = new JDialog();
         JPanel settingPanel = new JPanel(new GridLayout(2, 1));
         JPanel buttonPanel = new JPanel();
 
         JPanel blackPanel = new JPanel();
         blackPanel.setBorder(BorderFactory.createTitledBorder("Sobel"));
-        final JSlider hSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 10);
+        final JSlider hSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 100);
         hSlider.setMajorTickSpacing(100);
         hSlider.setMinorTickSpacing(20);
         hSlider.setPaintTicks(true);
@@ -60,7 +60,7 @@ public class SobelOperatorAction extends AbstractAction {
             @Override
             public void stateChanged(ChangeEvent e) {
                 int k = hSlider.getValue();
-                panel.sobelOperator(k/10.0);
+                panel.sobelOperator(k);
             }
         };
         dialog.addWindowListener(new WindowAdapter() {

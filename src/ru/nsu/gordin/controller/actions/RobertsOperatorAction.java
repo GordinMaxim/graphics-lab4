@@ -26,14 +26,14 @@ public class RobertsOperatorAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         if(!panel.isImageLoaded())
             return;
-        panel.robertsOperator(1.0);
+        panel.robertsOperator(100);
         final JDialog dialog = new JDialog();
         JPanel settingPanel = new JPanel(new GridLayout(2, 1));
         JPanel buttonPanel = new JPanel();
 
         JPanel blackPanel = new JPanel();
-        blackPanel.setBorder(BorderFactory.createTitledBorder("Roberts"));
-        final JSlider hSlider = new JSlider(JSlider.HORIZONTAL, 0, 100, 10);
+        blackPanel.setBorder(BorderFactory.createTitledBorder("Sobel"));
+        final JSlider hSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 100);
         hSlider.setMajorTickSpacing(100);
         hSlider.setMinorTickSpacing(20);
         hSlider.setPaintTicks(true);
@@ -60,10 +60,9 @@ public class RobertsOperatorAction extends AbstractAction {
             @Override
             public void stateChanged(ChangeEvent e) {
                 int k = hSlider.getValue();
-                panel.robertsOperator(k/10.0);
+                panel.robertsOperator(k);
             }
         };
-
         dialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {

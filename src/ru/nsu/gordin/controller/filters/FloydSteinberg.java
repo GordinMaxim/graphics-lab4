@@ -3,23 +3,29 @@ package ru.nsu.gordin.controller.filters;
 import ru.nsu.gordin.model.BMPImage;
 
 public class FloydSteinberg implements Filter{
-    private int n;
+    private int redBits;
+    private int greenBits;
+    private int blueBits;
 
-    public FloydSteinberg(int n) {
-        this.n = n;
+    public FloydSteinberg(int redBits, int greenBits, int blueBits) {
+        this.redBits = redBits;
+        this.greenBits = greenBits;
+        this.blueBits = blueBits;
     }
 
     @Override
     public BMPImage apply(BMPImage image) {
         BMPImage filteredImage = new BMPImage(image);
-        int gap = 256/n;
+        int redGap = 256/redBits;
+        int greenGap = 256/greenBits;
+        int blueGap = 256/blueBits;
         BMPImage.BMPColor[][] bitmap = image.getBitMap();
         BMPImage.BMPColor[][] filteredBitmap = filteredImage.getBitMap();
         for(int i = 1; i <= filteredImage.getHeight(); i++) {
             for(int j = 1; j <= filteredImage.getWidth(); j++) {
-                int er = filteredBitmap[i][j].red % gap;
-                int eg = filteredBitmap[i][j].green % gap;
-                int eb = filteredBitmap[i][j].blue % gap;
+                int er = filteredBitmap[i][j].red % redGap;
+                int eg = filteredBitmap[i][j].green % greenGap;
+                int eb = filteredBitmap[i][j].blue % blueGap;
                 filteredBitmap[i][j].red -= er;
                 filteredBitmap[i][j].green -= eg;
                 filteredBitmap[i][j].blue -= eb;

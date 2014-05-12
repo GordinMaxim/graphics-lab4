@@ -26,18 +26,37 @@ public class OrderedDitheringAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         if(!panel.isImageLoaded())
             return;
-        panel.orderedDithering(16);
+        panel.orderedDithering(16, 16, 16);
         final JDialog dialog = new JDialog();
-        JPanel settingPanel = new JPanel(new GridLayout(2, 1));
-        JPanel buttonPanel = new JPanel();
+        JPanel settingPanel = new JPanel(new GridLayout(4, 1));
+        settingPanel.setBorder(BorderFactory.createTitledBorder("color channel gradation"));
 
-        JPanel blackPanel = new JPanel();
-        blackPanel.setBorder(BorderFactory.createTitledBorder("color channel gradation"));
-        final JSlider hSlider = new JSlider(JSlider.HORIZONTAL, 1, 8, 4);
-        hSlider.setMajorTickSpacing(1);
-        hSlider.setPaintTicks(true);
-        hSlider.setPaintLabels(true);
-        blackPanel.add(hSlider);
+        final JSlider rSlider = new JSlider(JSlider.HORIZONTAL, 1, 8, 4);
+        rSlider.setMajorTickSpacing(1);
+        rSlider.setPaintTicks(true);
+        rSlider.setPaintLabels(true);
+        JPanel redPanel = new JPanel();
+        redPanel.setBorder(BorderFactory.createTitledBorder("red"));
+        redPanel.add(rSlider);
+        settingPanel.add(redPanel);
+
+        final JSlider gSlider = new JSlider(JSlider.HORIZONTAL, 1, 8, 4);
+        gSlider.setMajorTickSpacing(1);
+        gSlider.setPaintTicks(true);
+        gSlider.setPaintLabels(true);
+        JPanel greenPanel = new JPanel();
+        greenPanel.setBorder(BorderFactory.createTitledBorder("green"));
+        greenPanel.add(gSlider);
+        settingPanel.add(greenPanel);
+
+        final JSlider bSlider = new JSlider(JSlider.HORIZONTAL, 1, 8, 4);
+        bSlider.setMajorTickSpacing(1);
+        bSlider.setPaintTicks(true);
+        bSlider.setPaintLabels(true);
+        JPanel bluePanel = new JPanel();
+        bluePanel.setBorder(BorderFactory.createTitledBorder("blue"));
+        bluePanel.add(bSlider);
+        settingPanel.add(bluePanel);
 
         final JButton saveButton = new JButton("Save");
         final JButton cancelButton = new JButton("Cancel");
@@ -58,9 +77,13 @@ public class OrderedDitheringAction extends AbstractAction {
         ChangeListener changeListener = new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                int n = hSlider.getValue();
-                n = 1 << n;
-                panel.orderedDithering(n);
+                int r = rSlider.getValue();
+                r = 1 << r;
+                int g = gSlider.getValue();
+                g = 1 << g;
+                int b = bSlider.getValue();
+                b = 1 << b;
+                panel.orderedDithering(r, g, b);
             }
         };
 
@@ -71,15 +94,17 @@ public class OrderedDitheringAction extends AbstractAction {
                 panel.cancel();
             }
         });
-        hSlider.addChangeListener(changeListener);
-        settingPanel.add(blackPanel);
+        rSlider.addChangeListener(changeListener);
+        gSlider.addChangeListener(changeListener);
+        bSlider.addChangeListener(changeListener);
+        JPanel buttonPanel = new JPanel();
         buttonPanel.add(saveButton);
         buttonPanel.add(cancelButton);
         settingPanel.add(buttonPanel);
         dialog.add(settingPanel);
-        dialog.pack();
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         dialog.setModal(true);
+        dialog.pack();
         dialog.setLocationRelativeTo(panel);
         dialog.setVisible(true);
     }

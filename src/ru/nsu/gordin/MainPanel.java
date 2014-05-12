@@ -190,7 +190,7 @@ public class MainPanel extends JPanel{
         demo.add(drawPanel);
         demo.setOpaque(true);
         frame.setContentPane(demo);
-        frame.setMinimumSize(new Dimension(800, 600));
+        frame.setMinimumSize(new Dimension(800, 360));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

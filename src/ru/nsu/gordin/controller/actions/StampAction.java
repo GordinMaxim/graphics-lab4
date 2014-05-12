@@ -18,6 +18,7 @@ public class StampAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        panel.stamp();
+        if(panel.isImageLoaded())
+            panel.stamp();
     }
 }

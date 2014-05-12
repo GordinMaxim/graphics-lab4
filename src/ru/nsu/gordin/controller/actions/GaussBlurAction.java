@@ -18,6 +18,7 @@ public class GaussBlurAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        panel.gauss();
+        if(panel.isImageLoaded())
+            panel.gauss();
     }
 }

@@ -18,8 +18,8 @@ public class GreyShadeAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        panel.grey();
-
+        if(panel.isImageLoaded())
+            panel.grey();
     }
 }
 

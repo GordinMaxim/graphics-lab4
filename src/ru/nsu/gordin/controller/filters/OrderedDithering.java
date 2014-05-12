@@ -3,10 +3,14 @@ package ru.nsu.gordin.controller.filters;
 import ru.nsu.gordin.model.BMPImage;
 
 public class OrderedDithering implements Filter {
-    private int n;
+    private int redBits;
+    private int greenBits;
+    private int blueBits;
 
-    public OrderedDithering(int n) {
-        this.n = n;
+    public OrderedDithering(int redBits, int greenBits, int blueBits) {
+        this.redBits = redBits;
+        this.greenBits = greenBits;
+        this.blueBits = blueBits;
     }
 
     @Override
@@ -29,22 +33,24 @@ public class OrderedDithering implements Filter {
         };
         int mod = core.length;
         BMPImage.BMPColor[][] filteredBitmap = filteredImage.getBitMap();
-        int gap = 256/n;
+        int redGap = 256/redBits;
+        int greenGap = 256/greenBits;
+        int blueGap = 256/blueBits;
         for(int i = 1; i <= filteredImage.getHeight(); i++) {
             for(int j = 1; j <= filteredImage.getWidth(); j++) {
-                int er = filteredBitmap[i][j].red % gap;
-                int eg = filteredBitmap[i][j].green % gap;
-                int eb = filteredBitmap[i][j].blue % gap;
+                int er = filteredBitmap[i][j].red % redGap;
+                int eg = filteredBitmap[i][j].green % greenGap;
+                int eb = filteredBitmap[i][j].blue % blueGap;
                 filteredBitmap[i][j].red -= er;
                 filteredBitmap[i][j].green -= eg;
                 filteredBitmap[i][j].blue -= eb;
 
                 if(er > core[(i-1)%mod][(j-1)%mod])
-                    filteredBitmap[i][j].red += gap;
+                    filteredBitmap[i][j].red += redGap;
                 if(eg > core[(i-1)%mod][(j-1)%mod])
-                    filteredBitmap[i][j].green += gap;
+                    filteredBitmap[i][j].green += greenGap;
                 if(eb > core[(i-1)%mod][(j-1)%mod])
-                    filteredBitmap[i][j].blue += gap;
+                    filteredBitmap[i][j].blue += blueGap;
 
                 if(filteredBitmap[i][j].red > 255) filteredBitmap[i][j].red = 255;
                 if(filteredBitmap[i][j].green > 255) filteredBitmap[i][j].green = 255;

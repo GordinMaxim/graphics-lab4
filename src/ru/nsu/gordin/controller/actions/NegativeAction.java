@@ -18,7 +18,8 @@ public class NegativeAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        panel.negative();
+        if(panel.isImageLoaded())
+            panel.negative();
     }
 }
 

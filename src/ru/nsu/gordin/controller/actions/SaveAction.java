@@ -17,6 +17,7 @@ public class SaveAction extends AbstractAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-        panel.saveImage();
+        if(panel.isImageLoaded())
+            panel.saveImage();
     }
 }
