@@ -18,6 +18,7 @@ public class DoubleSizeAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        panel.doubleSize();
+        if(panel.isImageLoaded())
+            panel.doubleSize();
     }
 }

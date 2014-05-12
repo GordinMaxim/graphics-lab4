@@ -2,13 +2,11 @@ package ru.nsu.gordin;
 
 import ru.nsu.gordin.controller.*;
 import ru.nsu.gordin.controller.actions.*;
-import ru.nsu.gordin.model.BMPImage;
 import ru.nsu.gordin.view.DrawPanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.FileInputStream;
 
 public class MainPanel extends JPanel{
     protected Action openAction, saveAction, copyAction, aquarelleAction, monochromeAction, doubleSizeAction,
@@ -21,59 +19,63 @@ public class MainPanel extends JPanel{
 
     public void initActions(DrawPanel panel) {
         openAction = new OpenAction("Open",
-                createToolIcon(""),
+                createToolIcon("folder_open_icon&16"),
                 "Open image",
                 new Integer(KeyEvent.VK_O), panel);
         saveAction = new SaveAction("Save",
-                createToolIcon(""),
+                createToolIcon("save_icon&16"),
                 "Save image",
                 new Integer(KeyEvent.VK_S), panel);
+//        allocAction = new SaveAction("allocate image",
+//                createToolIcon("cursor_arrow_icon&16"),
+//                "allocate image",
+//                new Integer(KeyEvent.VK_Q), panel);
         copyAction = new CopyAction("Copy",
-                createToolIcon(""),
+                createToolIcon("clipboard_copy_icon&16"),
                 "copy 3rd image to 2nd",
                 new Integer(KeyEvent.VK_C), panel);
-        aquarelleAction = new AquarelleAction("AQ",
-                createToolIcon(""),
+        aquarelleAction = new AquarelleAction("aquarelle",
+                createToolIcon("arrow_bottom_icon&16"),
                 "aquarelle filter",
                 new Integer(KeyEvent.VK_A), panel);
-        monochromeAction = new MonochromeAction("MO",
-                createToolIcon(""),
+        monochromeAction = new MonochromeAction("monochrome",
+                createToolIcon("arrow_left_icon&16"),
                 "monochrome filter",
                 new Integer(KeyEvent.VK_M), panel);
-        doubleSizeAction = new DoubleSizeAction("DS",
-                createToolIcon(""),
+        doubleSizeAction = new DoubleSizeAction("double size",
+                createToolIcon("arrow_right_icon&16"),
                 "double size image",
                 new Integer(KeyEvent.VK_D), panel);
-        floydSteinbergAction = new FloydSteinbergAction("FS",
-                createToolIcon(""),
+        floydSteinbergAction = new FloydSteinbergAction("Floyd Steinberg",
+                createToolIcon("arrow_top_icon&16"),
                 "Floyd Steinberg filter",
                 new Integer(KeyEvent.VK_F), panel);
-        gaussBlurAction = new GaussBlurAction("GB",
-                createToolIcon(""),
+        gaussBlurAction = new GaussBlurAction("Gauss blur",
+                createToolIcon("round_plus_icon&16"),
                 "Gauss blur filter",
                 new Integer(KeyEvent.VK_B), panel);
-        greyShadeAction = new GreyShadeAction("GS",
-                createToolIcon(""),
+        greyShadeAction = new GreyShadeAction("grey",
+                createToolIcon("brush_icon&16"),
                 "grey shades",
                 new Integer(KeyEvent.VK_G), panel);
-        negativeAction = new NegativeAction("NG",
-                createToolIcon(""),
+        negativeAction = new NegativeAction("negative",
+                createToolIcon("bug_icon&16"),
                 "negative filter",
                 new Integer(KeyEvent.VK_N), panel);
-        orderedDitheringAction = new OrderedDitheringAction("OD",
-                createToolIcon(""),
+        orderedDitheringAction = new OrderedDitheringAction("ordered dithering",
+                createToolIcon("burst_icon&16"),
                 "ordered dithering filter",
                 new Integer(KeyEvent.VK_O), panel);
-        robertsOperatorAction = new RobertsOperatorAction("RO",
-                createToolIcon(""),
-                "Roberts operator",
+        robertsOperatorAction = new RobertsOperatorAction("Roberts cross",
+                createToolIcon("cog_icon&16"),
+                "Roberts cross",
                 new Integer(KeyEvent.VK_R), panel);
-        sobelOperatorAction = new SobelOperatorAction("SO",
-                createToolIcon(""),
+        sobelOperatorAction = new SobelOperatorAction("Sobel operator",
+                createToolIcon("refresh_icon&16"),
                 "Sobel operator",
                 new Integer(KeyEvent.VK_L), panel);
-        stampAction = new StampAction("S",
-                createToolIcon(""),
+        stampAction = new StampAction("stamp filter",
+                createToolIcon("round_minus_icon&16"),
                 "stamp filter",
                 new Integer(KeyEvent.VK_P), panel);
         aboutAction = new AboutAction("About",
@@ -159,9 +161,10 @@ public class MainPanel extends JPanel{
         ToolBar toolBar = new ToolBar();
         add(toolBar, BorderLayout.PAGE_START);
 
-        Action[] enabledActions = {openAction, saveAction, copyAction, aquarelleAction, monochromeAction, doubleSizeAction,
-                floydSteinbergAction, gaussBlurAction, greyShadeAction, negativeAction, orderedDitheringAction,
-                robertsOperatorAction, sobelOperatorAction, stampAction, aboutAction, exitAction};
+        Action[] enabledActions = {openAction, saveAction, copyAction, aquarelleAction, monochromeAction,
+                doubleSizeAction,floydSteinbergAction, gaussBlurAction, greyShadeAction, negativeAction,
+                orderedDitheringAction, robertsOperatorAction, sobelOperatorAction, stampAction, aboutAction,
+                exitAction};
 
         for(int i = 0; i < enabledActions.length; i++){
             button = new JButton(enabledActions[i]);
@@ -177,7 +180,7 @@ public class MainPanel extends JPanel{
     }
 
     private static void createAndShowGUI() {
-        JFrame frame = new JFrame("lab #1");
+        JFrame frame = new JFrame("lab #4");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         MainPanel demo = new MainPanel();
         DrawPanel drawPanel = new DrawPanel();

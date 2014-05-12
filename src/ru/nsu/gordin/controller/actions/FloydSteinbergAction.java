@@ -6,14 +6,13 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class FloydSteinbergAction extends AbstractAction {
     private DrawPanel panel;
 
     public FloydSteinbergAction(String text, ImageIcon icon,
-                           String desc, Integer mnemonic, DrawPanel panel) {
+                                String desc, Integer mnemonic, DrawPanel panel) {
         super(text, icon);
         putValue(SHORT_DESCRIPTION, desc);
         putValue(MNEMONIC_KEY, mnemonic);
@@ -24,9 +23,8 @@ public class FloydSteinbergAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         panel.floydSteinberg(16);
         final JDialog dialog = new JDialog();
-        dialog.setLocationRelativeTo(panel);
         JPanel settingPanel = new JPanel(new GridLayout(2, 1));
-        JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
+        JPanel buttonPanel = new JPanel();
 
         JPanel blackPanel = new JPanel();
         blackPanel.setBorder(BorderFactory.createTitledBorder("color channel gradation"));
@@ -61,6 +59,13 @@ public class FloydSteinbergAction extends AbstractAction {
             }
         };
 
+        dialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                panel.cancel();
+            }
+        });
         hSlider.addChangeListener(changeListener);
         settingPanel.add(blackPanel);
         buttonPanel.add(saveButton);
@@ -69,6 +74,8 @@ public class FloydSteinbergAction extends AbstractAction {
         dialog.add(settingPanel);
         dialog.pack();
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        dialog.setModal(true);
+        dialog.setLocationRelativeTo(panel);
         dialog.setVisible(true);
     }
 }

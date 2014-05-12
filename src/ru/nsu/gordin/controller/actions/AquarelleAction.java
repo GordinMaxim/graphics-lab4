@@ -18,6 +18,7 @@ public class AquarelleAction extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        panel.aquarelle();
+        if(panel.isImageLoaded())
+            panel.aquarelle();
     }
 }
